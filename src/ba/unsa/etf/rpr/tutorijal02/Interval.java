@@ -16,6 +16,7 @@ public class Interval {
         pripada_poc=false;
         pripada_kraj=false;
     }
+
     boolean isNull(){
         if(pocetna==0 && krajnja==0 && pripada_poc==false && pripada_kraj==false){
             return true;
@@ -49,14 +50,50 @@ public class Interval {
         }
     }
    public Interval intersect(Interval int2){
-        Interval int3;
-        if(this.pocetna>=int2.pocetna && this.krajnja>=int2.krajnja){
+        Interval int3=new Interval();
+        if(this.pocetna<=int2.pocetna && this.krajnja>=int2.krajnja){
             int3=new Interval(int2.pocetna,int2.krajnja,int2.pripada_poc,int2.pripada_kraj);
-        }else if(this.krajnja< int2.pocetna || int2.krajnja<this.pocetna ) {
+        }else if(this.krajnja<=int2.pocetna || int2.krajnja<this.pocetna ) {
 
             int3 = new Interval();
+        } else if(int2.pocetna<=this.krajnja && int2.pocetna>=this.pocetna && int2.krajnja>=this.krajnja){
+            int3=new Interval(int2.pocetna,this.krajnja,int2.pripada_poc,this.pripada_kraj);
         }
-        else if
+        return int3;
    }
+    public static Interval intersect(Interval i, Interval i2) {
+        Interval int3=new Interval();
+        if(i.pocetna<=i2.pocetna && i.krajnja>=i2.krajnja){
+            int3=new Interval(i2.pocetna,i2.krajnja,i2.pripada_poc,i2.pripada_kraj);
+        }else if(i.krajnja<=i2.pocetna || i2.krajnja<i.pocetna ) {
+
+            int3 = new Interval();
+        } else if(i2.pocetna<=i.krajnja && i2.pocetna>=i.pocetna && i2.krajnja>=i.krajnja){
+            int3=new Interval(i2.pocetna,i.krajnja,i2.pripada_poc,i.pripada_kraj);
+        }
+        return int3;
+    }
+    public String toString (){
+        if(this.isNull()) return "()";
+        String s="";
+        if(this.pripada_poc==true){
+             s="[" + pocetna +"," + krajnja;
+
+        }else{
+             s="("+ pocetna +"," + krajnja;
+        }
+        if(this.pripada_kraj==true) {
+            s=s+ "]";
+        }else{
+            s=s+")";
+        }
+     return s;
+    }
+    public boolean equals(Object b){
+        Interval a=(Interval) b;
+        if(pocetna==a.pocetna && krajnja==a.krajnja && this.pripada_kraj==a.pripada_kraj && this.pripada_poc==a.pripada_poc)
+            return true;
+        else return false;
+    }
 
 }
